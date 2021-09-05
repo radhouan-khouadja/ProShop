@@ -1,9 +1,10 @@
 import React from "react";
 import { Card } from "react-bootstrap";
+import Rating from "../components/RatingComponent";
 
 const ProductComponent = ({ product }) => {
   return (
-    <Card className="rounded my-3 p-3">
+    <Card className="rounded my-3 p-2">
       <a href={`/product/${product._id}`}>
         <Card.Img src={product.image} variant="top" />
       </a>
@@ -14,9 +15,10 @@ const ProductComponent = ({ product }) => {
           </Card.Title>
         </a>
         <Card.Text as="div">
-          <div className="my-3">
-            {product.rating} from {product.numReviews} reviews
-          </div>
+          <Rating
+            value={product.rating}
+            text={`${product.numReviews} reviews`}
+          />
         </Card.Text>
         <Card.Text as="h3">${product.price}</Card.Text>
       </Card.Body>

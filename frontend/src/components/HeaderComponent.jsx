@@ -9,12 +9,12 @@ const HeaderComponent = () => {
           <Navbar.Brand href="/">ProShop</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ml-auto">
               <Nav.Link href="/cart">
-                <i className="fas fa-shopping-cart me-2"></i>Cart
+                <i className="fas fa-shopping-cart mr-2"></i>Cart
               </Nav.Link>
               <Nav.Link href="/login">
-                <i className="fas fa-user me-2"></i>Sign In
+                <i className="fas fa-user mr-2"></i>Sign In
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

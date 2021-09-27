@@ -71,7 +71,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 //  @desc      update user profile
-//  @post      /api/users/profile
+//  @put      /api/users/profile
 //  @access    private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(mongoose.Types.ObjectId(req.user._id));
@@ -96,4 +96,79 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, getUserProfile, updateUserProfile };
+//  @desc      Get all users
+//  @get       /api/users
+//  @access    private/admin
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
+//  @desc      Delete user
+//  @delete    /api/users/:id
+//  @access    private/admin
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(mongoose.Types.ObjectId(req.params.id));
+  if (user) {
+    await user.remove();
+    res.json({ message: "user removed" });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+//  @desc      Get user by id
+//  @get       /api/users/:id
+//  @access    private/admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(
+    mongoose.Types.ObjectId(req.params.id)
+  ).select("-password");
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+//  @desc      get user profile
+//  @put       /api/users/:id
+//  @access    private/admin
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(mongoose.Types.ObjectId(req.params.id));
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.isAdmin) {
+      user.isAdmin = req.body.isAdmin;
+    } else {
+      user.isAdmin = false;
+    }
+
+    const updateUser = await user.save();
+
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+    });
+  } else {
+    res.status("404");
+    throw new Error("User Not Found");
+  }
+});
+
+export {
+  authUser,
+  registerUser,
+  getUserProfile,
+  updateUserProfile,
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUser,
+};

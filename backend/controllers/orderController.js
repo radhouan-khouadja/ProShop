@@ -75,6 +75,24 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 });
 
+//  @desc      Update order to delivred
+//  @route     PUT /api/orders/:id/deliver
+//  @access    Private/admin
+const updateOrderToDelivred = asyncHandler(async (req, res) => {
+  const order = await Order.findById(mongoose.Types.ObjectId(req.params.id));
+
+  if (order) {
+    order.isDelivred = true;
+    order.delivredAt = Date.now();
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order don't exist");
+  }
+});
+
 //  @desc      Get logged in user order
 //  @route     PUT /api/orders/myorders
 //  @access    Private
@@ -83,4 +101,19 @@ const getMyOrders = asyncHandler(async (req, res) => {
   res.json(orders);
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders };
+//  @desc      Get all order
+//  @route     Get /api/orders/
+//  @access    Private/admin
+const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find().populate("user", "id name");
+  res.json(orders);
+});
+
+export {
+  addOrderItems,
+  getOrderById,
+  updateOrderToPaid,
+  getMyOrders,
+  getOrders,
+  updateOrderToDelivred,
+};

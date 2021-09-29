@@ -95,3 +95,8 @@ john@example.com (Customer)
 jane@example.com (Customer)
 123456
 ```
+
+###  Project DEPLOYED URL
+
+https://proshoptn.herokuapp.com/
+
